@@ -11,6 +11,7 @@ class Word(models.Model):
 class BaseSentence(models.Model):
     project = models.ForeignKey(Project)
     words = models.ManyToManyField(Word, through=SentenceOrder)
+    weight = models.IntegerField()
 
     class Meta:
         abstract = True
@@ -46,4 +47,3 @@ class BaseProject(models.Model):
     icon = models.ImageField()
 
     max_lookahead = models.PositiveIntegerField(max_value=10)
-    parser = models.CharField(max_length=100)
