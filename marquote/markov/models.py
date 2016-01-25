@@ -1,16 +1,18 @@
 from django.db import models
 
 
-class Word(models.Model):
-    name = models.CharField(max_length=100, db_index=True, null=False, blank=False)
+class Project(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    subtitle = models.CharField(max_length=1000)
+    icon = models.FilePathField()
 
-    def __str__(self):
-        return self.name
+    max_lookahead = models.PositiveIntegerField()
 
 
 class BaseSentence(models.Model):
-    project = models.ForeignKey(Project)
-    words = models.ManyToManyField(Word, through=SentenceOrder)
+    project = models.ForeignKey('Project')
+    words = models.ManyToManyField('Word', through='SentenceOrder')
     weight = models.IntegerField()
 
     class Meta:
@@ -31,19 +33,17 @@ class Sentence(BaseSentence):
     pass
 
 
+class Word(models.Model):
+    name = models.CharField(max_length=100, db_index=True, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
 class SentenceOrder(models.Model):
-    word = models.ForeignKey(Word, related_name='word_in_sentence')
-    sentence = models.ForeignKey(Sentence)
-    position = models.PositiveIntegerField(max_value=10)
+    word = models.ForeignKey('Word', related_name='word_in_sentence')
+    sentence = models.ForeignKey('Sentence')
+    position = models.PositiveIntegerField()
 
     class Meta:
         ordering = ('position', )
-
-
-class BaseProject(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField()
-    subtitle = models.CharField(max_length=1000)
-    icon = models.ImageField()
-
-    max_lookahead = models.PositiveIntegerField(max_value=10)
