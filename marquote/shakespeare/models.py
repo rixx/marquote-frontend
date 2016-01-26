@@ -1,10 +1,10 @@
 from django.db import models
 
-from markov.models import BaseSentence, BaseProject
+from markov.models import Sentence, Project
 
 
 def get_shakespeare_project():
-    project, created = BaseProject.objects.get_or_create(name='Shakespeare')
+    project, created = Project.objects.get_or_create(name='Shakespeare')
 
     if created:
         project.subtitle = 'Clever Shakespeare pun'
@@ -26,8 +26,8 @@ class ShakespeareTitle(models.Model):
     form = models.CharField(max_length=2, choices=FORM_CHOICES, default=PLAY)
 
 
-class ShakespeareSentence(BaseSentence):
-    title = models.ForeignKey(Title)
+class ShakespeareSentence(Sentence):
+    title = models.ForeignKey(ShakespeareTitle)
 
     def save(self, *args, **kwargs):
         if not self.project:
