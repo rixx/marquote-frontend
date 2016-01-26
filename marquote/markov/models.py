@@ -10,13 +10,10 @@ class Project(models.Model):
     max_lookahead = models.PositiveIntegerField()
 
 
-class BaseSentence(models.Model):
+class Sentence(models.Model):
     project = models.ForeignKey('Project')
     words = models.ManyToManyField('Word', through='SentenceOrder')
     weight = models.IntegerField()
-
-    class Meta:
-        abstract = True
 
     def append_word(self):
         pass
@@ -27,10 +24,6 @@ class BaseSentence(models.Model):
     
     def __str__(self):
         return ' '.join(self.get_words())
-
-
-class Sentence(BaseSentence):
-    pass
 
 
 class Word(models.Model):
