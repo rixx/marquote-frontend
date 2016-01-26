@@ -6,7 +6,7 @@ web:
   build: .
   user: uid1000
   entrypoint: ./manage.py
-  command: "runserver 0.0.0.0:9009"
+  command: "runserver 0.0.0.0:8004"
   environment:
       PYTHONUNBUFFERED: 0
   volumes:
@@ -14,6 +14,6 @@ web:
   volumes_from:
    - data 
   ports:
-   - "9009:9009"
+   - "8004:8004"
   external_links:
    - axmeta_db_1:db

@@ -1,4 +1,4 @@
-FROM aexea/django-base
+FROM aexea/django-base:py3.5-slim
 MAINTAINER Aexea Carpentry
 
 WORKDIR marquote
