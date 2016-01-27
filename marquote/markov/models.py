@@ -21,7 +21,7 @@ class Sentence(models.Model):
     def get_words(self):
         for word in self.words.order_by('word_in_sentence'):
             yield word
-    
+
     def __str__(self):
         return ' '.join(self.get_words())
 
