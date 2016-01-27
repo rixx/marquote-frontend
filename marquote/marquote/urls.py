@@ -17,5 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^shakespeare/', 'shakespeare.urls')
     url(r'^admin/', admin.site.urls),
+    url(r'^$', 'main.urls')
 ]
