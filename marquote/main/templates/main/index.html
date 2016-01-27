@@ -1,0 +1,16 @@
+{% extends base.html %}
+{% load static %}
+
+{% block content %}
+
+    {% if all_projects %}
+        <ul> {% for project in all_projects %}
+
+            <li> <a href="{{project.slug}}">{{project.name}}</a></li>
+
+        {% endfor %} </ul>
+    {% else %}
+        <p>No projects are available at the moment.</p>
+    {% endif %}
+
+{% endblock %}
