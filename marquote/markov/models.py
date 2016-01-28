@@ -6,6 +6,8 @@ class Project(models.Model):
     slug = models.SlugField()
     subtitle = models.CharField(max_length=1000)
     icon = models.FilePathField()
+    start_word = models.CharField(max_length=30)
+    end_word = models.CharField(max_length=30)
 
     max_lookahead = models.PositiveIntegerField()
 
