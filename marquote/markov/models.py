@@ -24,6 +24,14 @@ class Sentence(models.Model):
         for word in self.words.order_by('word_in_sentence'):
             yield word
 
+    @classmethod
+    def get_or_create_project(cls):
+        project = Project.objects.filter(name=cls._get_project_name())
+        if not project:
+            project = cls._create_project()
+
+        return project
+
     def __str__(self):
         return ' '.join(self.get_words())
 

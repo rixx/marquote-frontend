@@ -3,17 +3,6 @@ from django.db import models
 from markov.models import Sentence, Project
 
 
-def get_shakespeare_project():
-    project, created = Project.objects.get_or_create(name='Shakespeare')
-
-    if created:
-        project.subtitle = 'Clever Shakespeare pun'
-        project.max_lookahead = 5
-        project.save()
-
-    return project
-
-
 class ShakespeareTitle(models.Model):
     SONNET = 'SO'
     PLAY = 'PL'
@@ -33,3 +22,15 @@ class ShakespeareSentence(Sentence):
         if not self.project:
             self.project = get_shakespeare_project()
         super(ShakespeareSentence, self).save(*args, **kwargs)
+
+    @staticmethod
+    def _get_project_name():
+        return 'Shakespeare'
+
+    @classmethod
+    def _create_project(cls):
+        project = Project(name='Shakespeare',
+                          subtitle='clever pun',
+                          max_lookahead=5,
+                         )
+        return project.save()
