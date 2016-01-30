@@ -89,3 +89,11 @@ def isroman(literal):
         $                   # end of string
     """)
     return roman_pattern.search(literal)
+
+
+def list_subsets(l, size):
+    if len(l) <= size:
+        yield l
+    else:
+        for i in range(len(l) - size + 1):
+            yield l[i:i+size]
