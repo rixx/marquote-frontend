@@ -1,6 +1,6 @@
 from django.db import models
 
-from markov.models import Sentence, Project
+from markov.models import Sequence, Project
 
 
 class ShakespeareTitle(models.Model):
@@ -11,17 +11,17 @@ class ShakespeareTitle(models.Model):
         (PLAY, 'play'),
     )
 
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, unique=True)
     form = models.CharField(max_length=2, choices=FORM_CHOICES, default=PLAY)
 
 
-class ShakespeareSentence(Sentence):
+class ShakespeareSequence(Sequence):
     title = models.ForeignKey(ShakespeareTitle)
 
     def save(self, *args, **kwargs):
         if not self.project:
             self.project = get_shakespeare_project()
-        super(ShakespeareSentence, self).save(*args, **kwargs)
+        super(ShakespeareSequence, self).save(*args, **kwargs)
 
     @staticmethod
     def _get_project_name():

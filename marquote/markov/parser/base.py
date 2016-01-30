@@ -2,7 +2,7 @@ class BaseParser
 
     @property
     @abstractmethod
-    def sentence_model(self):
+    def sequence_model(self):
         pass
 
     @abstractmethod

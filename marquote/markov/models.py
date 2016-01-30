@@ -12,16 +12,16 @@ class Project(models.Model):
     max_lookahead = models.PositiveIntegerField()
 
 
-class Sentence(models.Model):
+class Sequence(models.Model):
     project = models.ForeignKey('Project')
-    words = models.ManyToManyField('Word', through='SentenceOrder')
+    words = models.ManyToManyField('Word', through='SequenceOrder')
     weight = models.IntegerField()
 
     def append_word(self):
         pass
 
     def get_words(self):
-        for word in self.words.order_by('word_in_sentence'):
+        for word in self.words.order_by('word_in_sequence'):
             yield word
 
     @classmethod
@@ -43,9 +43,9 @@ class Word(models.Model):
         return self.name
 
 
-class SentenceOrder(models.Model):
-    word = models.ForeignKey('Word', related_name='word_in_sentence')
-    sentence = models.ForeignKey('Sentence')
+class SequenceOrder(models.Model):
+    word = models.ForeignKey('Word', related_name='word_in_sequence')
+    sequence = models.ForeignKey('Sequence')
     position = models.PositiveIntegerField()
 
     class Meta:
