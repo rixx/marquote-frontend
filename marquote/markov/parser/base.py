@@ -1,4 +1,4 @@
-class BaseParser
+class BaseParser:
 
     @property
     @abstractmethod

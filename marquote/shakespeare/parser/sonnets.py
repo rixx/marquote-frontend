@@ -1,5 +1,7 @@
 import requests
 
+import re
+
 from markov.parser.base import BaseParser
 from markov.models import (
     SequenceOrder,
@@ -54,7 +56,7 @@ class ShakespeareSonnetParser(BaseParser):
 
             for line in sonnetfile:
                 line = line.strip()
-                if line == '' or line.isnumeric():
+                if line == '' or isroman(line):
                     # start new at a new sonnet (just in case a punctuation mark was missing)
                     remainder = []
                     continue
@@ -74,3 +76,17 @@ class ShakespeareSonnetParser(BaseParser):
 
                         for i in range(len(wordset)):
                             SequenceOrder(word=wordset[i], sequence=sequence, position=i+1).save()
+
+
+def is_roman(literal):
+    literal = literal.strip()
+    roman_pattern = re.compile(""" # matches numbers up to 154 (largest sonnte)
+        ^                   # beginning of string
+        (C{0,1})            #
+        (XC|XL|L?X{0,3})    # tens - 90 (XC), 40 (XL), 0-30 (0 to 3 X's),
+                            #        or 50-80 (L, followed by 0 to 3 X's)
+        (IX|IV|V?I{0,3})    # ones - 9 (IX), 4 (IV), 0-3 (0 to 3 I's),
+                            #        or 5-8 (V, followed by 0 to 3 I's)
+        $                   # end of string
+    """)
+    return roman_pattern.search(literal)
