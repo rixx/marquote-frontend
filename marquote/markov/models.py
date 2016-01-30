@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField()
     subtitle = models.CharField(max_length=1000)
     icon = models.FilePathField()
@@ -14,8 +14,8 @@ class Project(models.Model):
 
 class Sequence(models.Model):
     project = models.ForeignKey('Project')
-    words = models.ManyToManyField('Word', through='SequenceOrder')
-    weight = models.IntegerField()
+    words = models.ManyToManyField('Word', through='SequenceOrder', null=True, blank=True)
+    weight = models.IntegerField(default=1)
 
     def append_word(self):
         pass
@@ -26,7 +26,7 @@ class Sequence(models.Model):
 
     @classmethod
     def get_or_create_project(cls):
-        project = Project.objects.filter(name=cls._get_project_name())
+        project = Project.objects.filter(name=cls._get_project_name()).first()
         if not project:
             project = cls._create_project()
 
@@ -37,7 +37,7 @@ class Sequence(models.Model):
 
 
 class Word(models.Model):
-    name = models.CharField(max_length=100, db_index=True, null=False, blank=False)
+    name = models.CharField(max_length=100, db_index=True, null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.name
