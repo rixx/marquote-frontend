@@ -32,5 +32,5 @@ class ShakespeareSequence(Sequence):
         project = Project(name='Shakespeare',
                           subtitle='clever pun',
                           max_lookahead=5,
-                         )
+                          )
         return project.save()

@@ -1,3 +1,7 @@
+from abc import abstractmethod
+import random
+
+
 class BaseGenerator:
 
     @property
@@ -8,10 +12,10 @@ class BaseGenerator:
     def get_project(self):
         return self.sequence_model.objects.first().project
 
-    def generate(self, *args, lookahead=3 **kwargs):
+    def generate(self, *args, lookahead=3, **kwargs):
         project = self.get_project()
         sentence = [self.project.start_word]
-        
+
         if not self.is_valid_lookahead(lookahead, project):
             # TODO: error handling
             return

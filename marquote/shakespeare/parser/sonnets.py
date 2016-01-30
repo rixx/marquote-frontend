@@ -30,7 +30,6 @@ class ShakespeareSonnetParser(BaseParser):
         with open(path, 'w') as f:
             f.write(data)
 
-
     def format_file(path):
         start = 'by William Shakespeare'
         end = 'End of Project Gutenberg'
@@ -41,7 +40,7 @@ class ShakespeareSonnetParser(BaseParser):
                 for line in dirty:
                     if part == 0 and start in line:
                         part = 1
-                    
+
                     if part == 1 and end in line:
                         part = 2
                     else:
@@ -65,7 +64,7 @@ class ShakespeareSonnetParser(BaseParser):
                 sentences = [sentence.split() for sentence in sentences]
                 sentences[0] = remainder + sentences[0]
 
-                if line.endswith(('.','?','!')):
+                if line.endswith(('.', '?', '!')):
                     remainder = sentences.pop(-1)
 
                 for sentence in sentences:
@@ -78,7 +77,7 @@ class ShakespeareSonnetParser(BaseParser):
                             SequenceOrder(word=wordset[i], sequence=sequence, position=i+1).save()
 
 
-def is_roman(literal):
+def isroman(literal):
     literal = literal.strip()
     roman_pattern = re.compile(""" # matches numbers up to 154 (largest sonnte)
         ^                   # beginning of string

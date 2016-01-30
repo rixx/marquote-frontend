@@ -9,4 +9,4 @@ class IndexView(View):
 
     def get(self, request):
         context = {'project': ShakespeareSequence.get_or_create_project()}
-        return render(request, self.template_name, {})
+        return render(request, self.template_name, context)
