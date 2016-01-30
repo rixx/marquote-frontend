@@ -1,6 +1,7 @@
-import requests
-
+import logging
 import re
+
+import requests
 
 from markov.parser.base import BaseParser
 from markov.models import (
@@ -18,7 +19,7 @@ class ShakespeareSonnetParser(BaseParser):
 
     def __init__(self):
         self.title, created = ShakespeareTitle.objects.get_or_create(
-            name='Shakespeare Sonnets',
+            title='Shakespeare Sonnets',
             form=ShakespeareTitle.SONNET
         )
 
@@ -28,20 +29,22 @@ class ShakespeareSonnetParser(BaseParser):
         data = response.content
 
         with open(path, 'w') as f:
-            f.write(data)
+            f.write(data.decode('utf-8'))
 
-    def format_file(path):
+    def format_file(self, path):
         start = 'by William Shakespeare'
         end = 'End of Project Gutenberg'
-        part = 0
+        part = -1
 
         with open(path, 'r') as dirty:
             with open('{}.clean'.format(path), 'w') as clean:
                 for line in dirty:
-                    if part == 0 and start in line:
+                    if part == -1:
+                        part = 0
+                    elif part == 0 and start in line:
                         part = 1
 
-                    if part == 1 and end in line:
+                    elif part == 1 and end in line:
                         part = 2
                     else:
                         clean.write(line)
@@ -52,6 +55,7 @@ class ShakespeareSonnetParser(BaseParser):
 
         with open('{}.clean'.format(path), 'r') as sonnetfile:
             remainder = []
+            project = self.sequence_model.get_or_create_project()
 
             for line in sonnetfile:
                 line = line.strip()
@@ -68,10 +72,11 @@ class ShakespeareSonnetParser(BaseParser):
                     remainder = sentences.pop(-1)
 
                 for sentence in sentences:
-                    words = [Word.object.get_or_create(name=word) for word in sentence]
+                    words = [Word.objects.get_or_create(name=word)[0] for word in sentence]
 
-                    for wordset in list_subsets(words, size=self.sequence_model.get_or_create_project().max_lookahead):
-                        sequence = ShakespeareSequence(title=self.title).save()
+                    for wordset in list_subsets(words, size=project.max_lookahead):
+                        sequence = ShakespeareSequence(title=self.title, project=project)
+                        sequence.save()
 
                         for i in range(len(wordset)):
                             SequenceOrder(word=wordset[i], sequence=sequence, position=i+1).save()
@@ -88,6 +93,8 @@ def isroman(literal):
                             #        or 5-8 (V, followed by 0 to 3 I's)
         $                   # end of string
     """)
+    if roman_pattern.search(literal):
+        logging.get_logger(__name__).warning('{} is a roman literal.'.format(literal))
     return roman_pattern.search(literal)
 
 

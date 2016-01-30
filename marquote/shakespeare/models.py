@@ -20,7 +20,7 @@ class ShakespeareSequence(Sequence):
 
     def save(self, *args, **kwargs):
         if not self.project:
-            self.project = self._get_or_create_project()
+            self.project = self.get_or_create_project()
         super(ShakespeareSequence, self).save(*args, **kwargs)
 
     @staticmethod
@@ -33,4 +33,5 @@ class ShakespeareSequence(Sequence):
                           subtitle='clever pun',
                           max_lookahead=5,
                           )
-        return project.save()
+        project.save()
+        return project
