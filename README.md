@@ -10,3 +10,18 @@ project), Projects themselves each get their own app, and, if required, parser.
 
 (This approach was chosen because projects requirements can vary a lot; a Shakespeare sonnet generator does different
 things from a Bible generator or a Star Trek generator).
+
+
+# Current state
+## Features
+
+- works with categories, projects and entries
+
+
+## Todo
+
+- Users and auth
+- Good datetime input
+- Tags
+- Dashboard
+- CLI
