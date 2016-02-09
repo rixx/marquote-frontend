@@ -14,6 +14,11 @@ class ShakespeareTitle(models.Model):
     title = models.CharField(max_length=200, unique=True)
     form = models.CharField(max_length=2, choices=FORM_CHOICES, default=PLAY)
 
+    def __str__(self):
+        if self.form == self.SONNET:
+            return "Title: Shakespeare's Sonnets"
+        return 'Title: {} (a Shakespeare play)'.format(self.title)
+
 
 class ShakespeareSequence(Sequence):
     title = models.ForeignKey(ShakespeareTitle)

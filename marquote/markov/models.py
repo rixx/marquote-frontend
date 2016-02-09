@@ -30,6 +30,9 @@ class Project(models.Model):
 
         return slug
 
+    def __str__(self):
+        return 'Project {}'.format(self.name)
+
 
 class Sequence(models.Model):
     project = models.ForeignKey('Project')
@@ -52,7 +55,7 @@ class Sequence(models.Model):
         return project
 
     def __str__(self):
-        return ' '.join(self.get_words())
+        return 'Sequence <{}>'.format(' '.join(self.get_words()))
 
 
 class Word(models.Model):
