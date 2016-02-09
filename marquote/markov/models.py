@@ -1,15 +1,34 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=40, unique=True)
     subtitle = models.CharField(max_length=1000)
     icon = models.FilePathField()
     start_word = models.CharField(max_length=30)
     end_word = models.CharField(max_length=30)
 
     max_lookahead = models.PositiveIntegerField()
+
+    def save(self, **kwargs):
+        if not self.pk:
+            self.slug = self.slugify()
+        super(Project, self).save()
+
+    def slugify(self, slug_field='slug'):
+        max_length = self.__class__._meta.get_field(slug_field).max_length
+        long_slug = slugify(self.name)
+        slug = slugify(self.name)[:max_length]
+        tries = 0
+
+        while self.__class__.objects.filter(slug=slug).exists():
+            tries += 1
+            ending = '-{}'.format(tries)
+            slug = '{}{}'.format(long_slug[max_length-len(ending)], ending)
+
+        return slug
 
 
 class Sequence(models.Model):

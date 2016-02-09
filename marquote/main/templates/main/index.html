@@ -6,7 +6,7 @@
     {% if all_projects %}
         <ul> {% for project in all_projects %}
 
-            <li> <a href="{{project.slug}}">{{project.name}}</a></li>
+            <li> <a href="/{{project.slug}}">{{project.name}}</a></li>
 
         {% endfor %} </ul>
     {% else %}
