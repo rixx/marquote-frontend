@@ -11,6 +11,11 @@ project), Projects themselves each get their own app, and, if required, parser.
 (This approach was chosen because projects requirements can vary a lot; a Shakespeare sonnet generator does different
 things from a Bible generator or a Star Trek generator).
 
+## Contributing, Bugs, Features
+
+Feel free to write feature requests, bug reports, documentation and the like. Read [this](CONTRIBUTING.md) for more
+details, and please be aware of the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 
 # Current state
 ## Features
